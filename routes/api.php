@@ -8,18 +8,21 @@ use Illuminate\Support\Facades\Route;
 // Apply ForceJsonResponse middleware to all API routes
 Route::middleware([ForceJsonResponse::class])->group(function () {
 
-// Authentication routes
-Route::post('register', [AuthController::class, 'register']);
-Route::post('login', [AuthController::class, 'login']);
+// Authentication routes - COMMENTED OUT BUT KEPT FOR FUTURE USE
+// Route::post('register', [AuthController::class, 'register']);
+// Route::post('login', [AuthController::class, 'login']);
 
-// Protected routes
-Route::middleware('auth:sanctum')->group(function () {
-    Route::post('logout', [AuthController::class, 'logout']);
-    Route::get('user', [AuthController::class, 'user']);
-    
-    // Protected QR code generation route (GET only)
-    Route::get('generate-qr', [QrCodeController::class, 'generateQr'])->name('generate.qr');
-});
+// Protected routes - COMMENTED OUT BUT KEPT FOR FUTURE USE
+// Route::middleware('auth:sanctum')->group(function () {
+//     Route::post('logout', [AuthController::class, 'logout']);
+//     Route::get('user', [AuthController::class, 'user']);
+//     
+//     // Protected QR code generation route (GET only)
+//     Route::get('generate-qr', [QrCodeController::class, 'generateQr'])->name('generate.qr');
+// });
+
+// QR code generation route WITHOUT authentication
+Route::get('generate-qr', [QrCodeController::class, 'generateQr'])->name('generate.qr');
 
 Route::options('generate-qr', function() {
     return response('', 200)

@@ -11,19 +11,20 @@ use Exception;
  * @OA\Info(
  *     title="QR Code Generation API",
  *     version="1.0.0",
- *     description="Secure API for generating QR codes with Laravel Sanctum authentication",
+ *     description="API for generating QR codes (authentication temporarily disabled)",
  *     @OA\Contact(
  *         email="api@example.com",
  *         name="API Support"
  *     )
  * )
  *
+ * Security scheme commented out - authentication temporarily disabled
  * @OA\SecurityScheme(
  *     securityScheme="bearerAuth",
  *     type="http",
  *     scheme="bearer",
  *     bearerFormat="JWT",
- *     description="Enter your Laravel Sanctum token. Get it by logging in via /api/login"
+ *     description="Authentication is temporarily disabled"
  * )
  *
  * @OA\Server(
@@ -32,7 +33,7 @@ use Exception;
  * )
  *
  * @OA\Server(
- *     url="https://qr.cma.gov.ae",
+ *     url="https://cmaqr.morestaging.com",
  *     description="Production server"
  * )
  */
@@ -44,8 +45,7 @@ class QrCodeController extends Controller
      *     operationId="generateQrGet",
      *     tags={"QR Code Generation"},
      *     summary="Generate QR code via GET request",
-     *     description="Generates a QR code image for the provided URL with optional size customization. Requires authentication via Laravel Sanctum.",
-     *     security={{"bearerAuth": {}}},
+     *     description="Generates a QR code image for the provided URL with optional size customization.",
      *     @OA\Parameter(
      *         name="url",
      *         in="query",
@@ -110,25 +110,25 @@ class QrCodeController extends Controller
      */
     public function generateQr(Request $request)
     {
-        // Debug: Log authentication status
-        \Log::info('QR Generation Request', [
-            'authenticated' => auth()->check(),
-            'user_id' => auth()->id(),
-            'has_bearer' => $request->bearerToken() ? 'yes' : 'no',
-            'ip' => $request->ip(),
-            'user_agent' => $request->userAgent()
-        ]);
+        // Debug: Log authentication status - COMMENTED OUT BUT KEPT FOR FUTURE USE
+        // \Log::info('QR Generation Request', [
+        //     'authenticated' => auth()->check(),
+        //     'user_id' => auth()->id(),
+        //     'has_bearer' => $request->bearerToken() ? 'yes' : 'no',
+        //     'ip' => $request->ip(),
+        //     'user_agent' => $request->userAgent()
+        // ]);
         
-        // Double-check authentication
-        if (!auth()->check()) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Unauthenticated. Please provide a valid bearer token.',
-                'error' => 'Invalid or missing authentication token'
-            ], 401)->header('Access-Control-Allow-Origin', '*')
-                   ->header('Access-Control-Allow-Methods', 'GET, OPTIONS')
-                   ->header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-        }
+        // Double-check authentication - COMMENTED OUT BUT KEPT FOR FUTURE USE
+        // if (!auth()->check()) {
+        //     return response()->json([
+        //         'success' => false,
+        //         'message' => 'Unauthenticated. Please provide a valid bearer token.',
+        //         'error' => 'Invalid or missing authentication token'
+        //     ], 401)->header('Access-Control-Allow-Origin', '*')
+        //        ->header('Access-Control-Allow-Methods', 'GET, OPTIONS')
+        //        ->header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+        // }
         
         // Validate URL
         if (!isset($request->url) || !filter_var(filter_var($request->url, FILTER_SANITIZE_URL), FILTER_VALIDATE_URL)) {

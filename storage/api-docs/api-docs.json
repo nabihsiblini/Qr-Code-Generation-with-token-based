@@ -2,7 +2,7 @@
     "openapi": "3.0.0",
     "info": {
         "title": "QR Code Generation API",
-        "description": "Secure API for generating QR codes with Laravel Sanctum authentication",
+        "description": "API for generating QR codes (authentication temporarily disabled)",
         "contact": {
             "name": "API Support",
             "email": "api@example.com"
@@ -15,7 +15,7 @@
             "description": "Local development server"
         },
         {
-            "url": "https://qr.cma.gov.ae",
+            "url": "https://cmaqr.morestaging.com",
             "description": "Production server"
         }
     ],
@@ -26,7 +26,7 @@
                     "QR Code Generation"
                 ],
                 "summary": "Generate QR code via GET request",
-                "description": "Generates a QR code image for the provided URL with optional size customization. Requires authentication via Laravel Sanctum.",
+                "description": "Generates a QR code image for the provided URL with optional size customization.",
                 "operationId": "generateQrGet",
                 "parameters": [
                     {
@@ -121,204 +121,7 @@
                             }
                         }
                     }
-                },
-                "security": [
-                    {
-                        "bearerAuth": []
-                    }
-                ]
-            }
-        },
-        "/api/register": {
-            "post": {
-                "tags": [
-                    "Authentication"
-                ],
-                "summary": "Register a new user",
-                "operationId": "8a56853624e025573120a09a4c75d468",
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "required": [
-                                    "name",
-                                    "email",
-                                    "password"
-                                ],
-                                "properties": {
-                                    "name": {
-                                        "type": "string",
-                                        "example": "John Doe"
-                                    },
-                                    "email": {
-                                        "type": "string",
-                                        "format": "email",
-                                        "example": "john@example.com"
-                                    },
-                                    "password": {
-                                        "type": "string",
-                                        "format": "password",
-                                        "example": "password123"
-                                    }
-                                },
-                                "type": "object"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "201": {
-                        "description": "User registered successfully",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "user": {
-                                            "type": "object"
-                                        },
-                                        "token": {
-                                            "type": "string",
-                                            "example": "1|laravel_sanctum_token..."
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "422": {
-                        "description": "Validation error"
-                    }
                 }
-            }
-        },
-        "/api/login": {
-            "post": {
-                "tags": [
-                    "Authentication"
-                ],
-                "summary": "Login user",
-                "operationId": "a3b306d14572d1f4bd6c064b3233e7b8",
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "required": [
-                                    "email",
-                                    "password"
-                                ],
-                                "properties": {
-                                    "email": {
-                                        "type": "string",
-                                        "format": "email",
-                                        "example": "john@example.com"
-                                    },
-                                    "password": {
-                                        "type": "string",
-                                        "format": "password",
-                                        "example": "password123"
-                                    }
-                                },
-                                "type": "object"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "Login successful",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "user": {
-                                            "type": "object"
-                                        },
-                                        "token": {
-                                            "type": "string",
-                                            "example": "1|laravel_sanctum_token..."
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Invalid credentials"
-                    }
-                }
-            }
-        },
-        "/api/logout": {
-            "post": {
-                "tags": [
-                    "Authentication"
-                ],
-                "summary": "Logout user",
-                "operationId": "fe8f3429cd6979b3b4517e186505f9f9",
-                "responses": {
-                    "200": {
-                        "description": "Logged out successfully",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Logged out successfully"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthenticated"
-                    }
-                },
-                "security": [
-                    {
-                        "bearerAuth": []
-                    }
-                ]
-            }
-        },
-        "/api/user": {
-            "get": {
-                "tags": [
-                    "Authentication"
-                ],
-                "summary": "Get authenticated user details",
-                "operationId": "7c1cf647d76fad4b3eb1549fa4fe2f4c",
-                "responses": {
-                    "200": {
-                        "description": "User details",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "user": {
-                                            "type": "object"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthenticated"
-                    }
-                },
-                "security": [
-                    {
-                        "bearerAuth": []
-                    }
-                ]
             }
         }
     },
@@ -326,7 +129,7 @@
         "securitySchemes": {
             "bearerAuth": {
                 "type": "http",
-                "description": "Enter your Laravel Sanctum token. Get it by logging in via /api/login",
+                "description": "Authentication is temporarily disabled",
                 "bearerFormat": "JWT",
                 "scheme": "bearer"
             }
@@ -336,10 +139,6 @@
         {
             "name": "QR Code Generation",
             "description": "QR Code Generation"
-        },
-        {
-            "name": "Authentication",
-            "description": "Authentication"
         }
     ]
 }

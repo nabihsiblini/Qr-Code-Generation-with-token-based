@@ -3,7 +3,7 @@
 FROM composer:2.6 AS composer-build
 WORKDIR /app
 COPY composer.json composer.lock ./
-RUN composer install --no-dev --no-scripts --no-autoloader --prefer-dist --ignore-platform-reqs
+RUN composer install --no-dev --no-scripts --prefer-dist --ignore-platform-reqs --optimize-autoloader
 
 # Stage 2: Final production image
 FROM php:8.2-fpm-alpine
@@ -41,6 +41,9 @@ RUN apk add --no-cache \
     && docker-php-ext-enable redis \
     && rm -rf /var/cache/apk/*
 
+# Install Composer
+COPY --from=composer:2.6 /usr/bin/composer /usr/bin/composer
+
 # Configure PHP
 COPY docker/php/php.ini /usr/local/etc/php/php.ini
 COPY docker/php/php-fpm.conf /usr/local/etc/php-fpm.d/www.conf
@@ -55,14 +58,11 @@ COPY docker/supervisor/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 # Create application directory
 WORKDIR /var/www/html
 
-# Copy application files
+# Copy application files first
 COPY --chown=www-data:www-data . .
 
-# Copy composer dependencies from build stage
+# Copy composer dependencies from build stage (this overwrites the vendor directory)
 COPY --from=composer-build --chown=www-data:www-data /app/vendor ./vendor
-
-# Generate optimized autoloader
-RUN composer dump-autoload --optimize --no-dev
 
 # Set proper permissions
 RUN chown -R www-data:www-data /var/www/html \
