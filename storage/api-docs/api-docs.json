@@ -15,7 +15,7 @@
             "description": "Local development server"
         },
         {
-            "url": "https://cmaqr.morestaging.com",
+            "url": "https://qr.cma.gov.ae",
             "description": "Production server"
         }
     ],

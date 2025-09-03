@@ -33,7 +33,7 @@ use Exception;
  * )
  *
  * @OA\Server(
- *     url="https://cmaqr.morestaging.com",
+ *     url="https://qr.cma.gov.ae",
  *     description="Production server"
  * )
  */
