@@ -1,0 +1,144 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "QR Code Generation API",
+        "description": "API for generating QR codes (authentication temporarily disabled)",
+        "contact": {
+            "name": "API Support",
+            "email": "api@example.com"
+        },
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://localhost:8000",
+            "description": "Local development server"
+        },
+        {
+            "url": "https://cmaqr.morestaging.com",
+            "description": "Production server"
+        }
+    ],
+    "paths": {
+        "/api/generate-qr": {
+            "get": {
+                "tags": [
+                    "QR Code Generation"
+                ],
+                "summary": "Generate QR code via GET request",
+                "description": "Generates a QR code image for the provided URL with optional size customization.",
+                "operationId": "generateQrGet",
+                "parameters": [
+                    {
+                        "name": "url",
+                        "in": "query",
+                        "description": "The URL to encode in the QR code",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "url",
+                            "example": "https://circle.cma.gov.ae/DocumentVerification?docId=00008331-NG-vZox"
+                        }
+                    },
+                    {
+                        "name": "size",
+                        "in": "query",
+                        "description": "Size of the QR code in pixels (default: 300)",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 300,
+                            "maximum": 1000,
+                            "minimum": 50,
+                            "example": 100
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "QR code image generated successfully",
+                        "headers": {
+                            "Content-Type": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "image/png"
+                                }
+                            },
+                            "Cache-Control": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "public, max-age=3600"
+                                }
+                            }
+                        },
+                        "content": {
+                            "image/png": {
+                                "schema": {
+                                    "description": "PNG image data",
+                                    "type": "string",
+                                    "format": "binary"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized - Invalid or missing token",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthorized access"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error - Invalid URL",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Invalid URL"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "description": "Authentication is temporarily disabled",
+                "bearerFormat": "JWT",
+                "scheme": "bearer"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "QR Code Generation",
+            "description": "QR Code Generation"
+        }
+    ]
+}
